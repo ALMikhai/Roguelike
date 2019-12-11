@@ -1,6 +1,10 @@
 #include <iostream>
+#include "Models/MapDraw.h"
+
+//cd /home/alexander/Документы/CLionProjects/Roguelike/cmake-build-debug/
 
 int main() {
-  std::cout << "Hello, World!" << std::endl;
+  Map map(10, 10);
+  MapDraw::Draw(map);
   return 0;
 }
