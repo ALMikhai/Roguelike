@@ -1,10 +1,9 @@
-#include <iostream>
-#include "Models/MapDraw.h"
+#include "Models/Map.h"
 
 //cd /home/alexander/Документы/CLionProjects/Roguelike/cmake-build-debug/
 
 int main() {
   Map map(10, 10);
-  MapDraw::Draw(map);
+  map.Draw();
   return 0;
 }
