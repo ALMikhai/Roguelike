@@ -1,15 +1,13 @@
 #include "Character.h"
 
-#define maxHp 30
-#define sym '#'
+#define WallHp 30
+#define WallSym '#'
 
 class Wall : public Character {
 
  public:
-  Wall(Point& pos) : _pos(pos), _maxHp(maxHp), _hp(maxHp), _sym(sym) {}
-  Wall(Point&& pos) : Wall(pos) {}
-//  Wall(Wall& wall) : _pos(wall._pos), _maxHp(wall._maxHp), _hp(wall._hp), _sym(wall._sym) {}
-//  Wall(Wall&& wall) : Wall(wall) {}
+  explicit Wall(Point& pos) : _pos(pos), _maxHp(WallHp), _hp(WallHp), _sym(WallSym) {}
+  explicit Wall(Point&& pos) : Wall(pos) {}
 
   Point& GetPos() override {
     return _pos;

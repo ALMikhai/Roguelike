@@ -1,19 +1,23 @@
 #include <vector>
 #include <string>
+#include <memory>
 #include <ncurses.h>
 #include "Characters/Wall.h"
+#include "Characters/Floor.h"
+#include "Characters/Knight.h"
 
 class Map {
-  using mapType = std::vector<std::vector<Wall>>;
+  using mapType = std::vector<std::vector<std::unique_ptr<Character>>>;
+  using mapElement = std::unique_ptr<Character>;
 
  public:
-  Map() : _width(0), _height(0), _data() {}
-  explicit Map(Map& map) : _width(map._data[0].size()), _height(map._data.size()), _data(map._data) {}
   Map(size_t width, size_t height) : _width(width), _height(height), _data(height) {
     for (size_t i = 0; i < height; ++i) {
       for (size_t j = 0; j < width; ++j) {
-        Wall a(Point(i, j));
-        _data[i].emplace_back(Wall(a));
+        if(i == 0 || j == 0 || i == _height - 1 || j == _width - 1)
+          _data[i].push_back(mapElement (new Wall(Point(i, j))));
+        else
+          _data[i].push_back(mapElement (new Floor(Point(i, j))));
       }
     }
   }
@@ -31,15 +35,11 @@ class Map {
   }
 
   void Draw() const {
-    initscr();
     for (size_t i = 0; i < getHeight(); ++i) {
       for (size_t j = 0; j < getWidth(); ++j) {
-        mvaddch(j, i, _data[i][j].GetSym());
+        mvaddch(j, i, _data[i][j]->GetSym());
       }
     }
-    refresh();
-    getch();
-    endwin();
   }
 
  private:

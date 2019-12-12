@@ -1,9 +1,10 @@
-#define KnightHp 100
-#define KnightSym '@'
+#define FloorHp 0
+#define FloorSym '.'
 
-class Knight : public Character {
+class Floor : public Character{
  public:
-  explicit Knight(Point& pos) : _pos(pos), _maxHp(KnightHp), _hp(KnightHp), _sym(KnightSym) {}
+  explicit Floor(Point& pos) : _pos(pos), _maxHp(WallHp), _hp(FloorHp), _sym(FloorSym) {}
+  explicit Floor(Point&& pos) : Floor(pos) {}
 
   Point& GetPos() override {
     return _pos;
@@ -22,4 +23,5 @@ class Knight : public Character {
   size_t _maxHp;
   size_t _hp;
   char _sym;
+
 };
