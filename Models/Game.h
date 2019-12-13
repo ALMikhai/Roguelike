@@ -1,7 +1,17 @@
 #include <map>
+#include <vector>
+#include <string>
+#include <memory>
+#include <ncurses.h>
+#include <cstdlib>
+#include "Characters/Character.h"
+#include "Characters/Wall.h"
+#include "Characters/Floor.h"
+#include "Characters/Knight.h"
+#include "Characters/Princess.h"
 #include "Map.h"
 
-#define mapSize 20
+#define mapSize 40
 
 static std::map<size_t, Point> Sides = {
     std::make_pair(KEY_UP, Point(0, -1)),
@@ -10,7 +20,7 @@ static std::map<size_t, Point> Sides = {
     std::make_pair(KEY_RIGHT, Point(1, 0)),
 };
 
-class Game{
+class Game {
  public:
 
   Game() : _map(mapSize, mapSize) {}
@@ -19,19 +29,23 @@ class Game{
     noecho();
     keypad(stdscr, TRUE);
 
-    while(true) {
+    while (true) {
       clear();
       _map.Draw(); // Draw.
       refresh();
 
-      bool moveDone = false;
+      TurnResult turnResult = BAD;
       size_t input = 0;
 
-      while (!moveDone && input != 27) { // Wait action.
+      while (turnResult == BAD && input != 27) { // Wait action.
         input = getch();
         auto side = Sides.find(input);
         if (side != Sides.end())
-          moveDone = _map.KnightMove(side->second);
+          turnResult = _map.KnightMove(side->second);
+      }
+
+      if (turnResult == WIN) {
+        Win();
       }
 
       if (input == 27)
@@ -42,5 +56,14 @@ class Game{
   }
 
  private:
+  void Win() {
+    clear();
+    _map = Map(mapSize, mapSize);
+  }
+
+  void Restart() {
+
+  }
+
   Map _map;
 };

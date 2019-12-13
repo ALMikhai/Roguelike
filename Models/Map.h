@@ -1,11 +1,6 @@
-#include <vector>
-#include <string>
-#include <memory>
-#include <ncurses.h>
-#include <cstdlib>
-#include "Characters/Wall.h"
-#include "Characters/Floor.h"
-#include "Characters/Knight.h"
+#define HpSpacing 2
+
+enum TurnResult { BAD, NEXT, WIN, LOSE };
 
 class Map {
   using mapType = std::vector<std::vector<std::unique_ptr<Character>>>;
@@ -25,6 +20,9 @@ class Map {
     Point knightPos = findFreePosition();
     _knightPos = knightPos;
     _data[knightPos.Y][knightPos.X] = mapElement (new Knight(knightPos));
+
+    Point princessPos = findFreePosition();
+    _data[princessPos.Y][princessPos.X] = mapElement (new Princess(princessPos));
   }
 
   void Draw() const {
@@ -33,28 +31,43 @@ class Map {
         mvaddch(cell->GetPos().Y, cell->GetPos().X, cell->GetSym());
       }
     }
+    DrawHpBar();
   }
 
-  bool KnightMove(Point side) {
+  TurnResult KnightMove(Point side) {
     Point newPos = _knightPos + side;
     mapElement& knight = _data[_knightPos.Y][_knightPos.X];
     mapElement& newPlace = _data[newPos.Y][newPos.X];
 
-    if (newPlace->GetSym() == FloorSym) {
-      swapCells(knight, newPlace);
-      _knightPos = newPos;
-      return true;
+    switch (newPlace->GetSym()) {
+      case FloorSym : {
+        swapCells(knight, newPlace);
+        _knightPos = newPos;
+        return NEXT;
+      }
+
+      case PrincessSym : {
+        return WIN;
+      }
     }
 
-    return false;
+    return BAD;
   }
 
  private:
   size_t _width;
   size_t _height;
   mapType _data;
-
   Point _knightPos;
+
+  void DrawHpBar() const {
+    mvaddch(_height + HpSpacing, 0, 'H');
+    mvaddch(_height + HpSpacing, 1, 'P');
+    size_t hp = _data[_knightPos.Y][_knightPos.X]->GetHp();
+    for (size_t i = 0; i < hp; ++i) {
+      mvaddch(_height + HpSpacing, 2 + i, '-');
+    }
+  }
 
   Point findFreePosition() {
     Point result(0, 0);
