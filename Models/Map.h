@@ -12,7 +12,7 @@ class Map {
   using mapElement = std::unique_ptr<Character>;
 
  public:
-  Map(size_t width, size_t height) : _width(width), _height(height), _data(height), _knightPos(0, 0) {
+  Map(size_t width, size_t height) : _width(width), _height(height), _data(height), _knightPos(0, 0){
     for (size_t i = 0; i < height; ++i) {
       for (size_t j = 0; j < width; ++j) {
         if(i == 0 || j == 0 || i == _height - 1 || j == _width - 1)
@@ -45,6 +45,7 @@ class Map {
       _knightPos = newPos;
       return true;
     }
+
     return false;
   }
 
