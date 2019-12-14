@@ -10,12 +10,13 @@ class Character {
   virtual size_t& GetHp() {
     return _hp;
   }
-  virtual const char& GetSym() {
+  virtual const char& GetSym() const {
     return _sym;
   }
   virtual const size_t& GetDamage() {
     return _damage;
   }
+
   virtual ~Character() = default;
 
  private:
