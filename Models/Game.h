@@ -11,7 +11,8 @@
 #include "Characters/Princess.h"
 #include "Map.h"
 
-#define mapSize 40
+#define mapHeight 50
+#define mapWidth 150
 #define numEnemies 0
 #define HpSpacing 2
 
@@ -28,11 +29,13 @@ class Game {
   using CharacterType = std::unique_ptr<Character>;
 
  public:
-  Game() : _map(mapSize, mapSize), _chars() {
+  Game() : _map(mapWidth, mapHeight), _chars() {
     CreatChars();
   }
 
   void Start() {
+    srand(time(nullptr)); // TODO сид от времени.
+
     initscr();
     noecho();
     keypad(stdscr, TRUE);
@@ -92,7 +95,7 @@ class Game {
 
   void Win() { // TODO переделать.
     clear();
-    _map = Map(mapSize, mapSize);
+    _map = Map(mapWidth, mapHeight);
   }
 
   void CharUpdate () { } // zombie, dragon, ...
@@ -117,8 +120,8 @@ class Game {
     Point result(0, 0);
 
     do {
-      result.X = rand() % mapSize;
-      result.Y = rand() % mapSize;
+      result.X = rand() % mapWidth;
+      result.Y = rand() % mapHeight;
     } while (!findChar(result).first && !_map.CheckCellForStep(result));
 
     return result;
@@ -135,11 +138,11 @@ class Game {
   }
 
   void DrawHpBar() const {
-    mvaddch(mapSize + HpSpacing, 0, 'H');
-    mvaddch(mapSize + HpSpacing, 1, 'P');
+    mvaddch(mapHeight + HpSpacing, 0, 'H');
+    mvaddch(mapHeight + HpSpacing, 1, 'P');
     size_t hp = _knight->GetHp();
     for (size_t i = 0; i < hp; ++i) {
-      mvaddch(mapSize + HpSpacing, 2 + i, '-');
+      mvaddch(mapHeight + HpSpacing, 2 + i, '-');
     }
   }
 };
