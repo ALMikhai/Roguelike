@@ -10,6 +10,8 @@ class Map {
 
  public:
   Map(int32_t width, int32_t height) : _width(width), _height(height), _data(height), _dataTmp(height) {
+    srand(time(nullptr));
+
     for (int32_t  i = 0; i < height; ++i) {
       for (int32_t j = 0; j < width; ++j) {
         if(i == 0 || j == 0 || i == _height - 1 || j == _width - 1)
@@ -49,7 +51,7 @@ class Map {
   mapType _data;
   mapType _dataTmp;
 
-  void generationLevel(bool useSecondProperty) {
+  void generationLevel(bool useSecondProperty) { // Cellular Automata Method for Generating Random Cave-Like Levels.
     for (int32_t y = 1; y < _height - 1; ++y) {
       for (int32_t x = 1; x < _width - 1; ++x) {
         int32_t floors = 0;

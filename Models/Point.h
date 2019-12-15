@@ -4,6 +4,8 @@ class Point{
  public:
   int32_t X;
   int32_t Y;
+
+  Point() = default;
   Point(int32_t x, int32_t y) : X(x), Y(y) {}
 //  Point(Point& tmp) : Point(tmp.X, tmp.Y) {}
 

@@ -4,21 +4,24 @@
 #include <memory>
 #include <ncurses.h>
 #include <cstdlib>
+#include <unistd.h>
 #include "Characters/Character.h"
 #include "Characters/Wall.h"
 #include "Characters/Floor.h"
 #include "Characters/Knight.h"
 #include "Characters/Princess.h"
+#include "Characters/Zombie.h"
 #include "Map.h"
 
 #define mapHeight 50
 #define mapWidth 150
-#define numEnemies 0
+#define numEnemies 3
 #define HpSpacing 2
+#define TimeToNextTurn 1000
 
 enum TurnResult { BAD, NEXT, WIN, LOSE };
 
-static std::map<size_t, Point> Sides = {
+static std::map<const size_t, const Point> Sides = {
     std::make_pair(KEY_UP, Point(0, -1)),
     std::make_pair(KEY_DOWN, Point(0, 1)),
     std::make_pair(KEY_LEFT, Point(-1, 0)),
@@ -49,14 +52,11 @@ class Game {
       refresh();
 
       TurnResult turnResult = BAD;
-      size_t input = 0;
-
-      while (turnResult == BAD && input != 27) { // Wait action.
-        input = getch();
-        auto side = Sides.find(input);
-        if (side != Sides.end())
-          turnResult = KnightMove(side->second);
-      }
+      timeout(TimeToNextTurn); // Time to wait action from player.
+      size_t input = getch();
+      auto side = Sides.find(input);
+      if (side != Sides.end())
+        turnResult = CharacterMove(*_knight, side->second);
 
       if (turnResult == WIN) {
         Win();
@@ -68,6 +68,10 @@ class Game {
 
       if (input == 27)
         break;
+
+      for (auto& enemy : _chars) {
+        CharacterUpdate(*enemy);
+      }
     }
 
     endwin();
@@ -78,8 +82,8 @@ class Game {
   std::vector<CharacterType> _chars;
   CharacterType _knight;
 
-  TurnResult KnightMove(const Point& side) {
-    Point newPos = _knight->GetPos() + side;
+  TurnResult CharacterMove(Character& character, const Point& side) {
+    Point newPos = character.GetPos() + side;
 
     if (!_map.CheckCellForStep(newPos))
       return BAD;
@@ -88,8 +92,8 @@ class Game {
 
     if (checkPos.first)
       return BAD; // TODO Do damage.
-      
-    _knight->GetPos() = newPos;
+
+    character.GetPos() = newPos;
     return NEXT;
   }
 
@@ -98,7 +102,12 @@ class Game {
     _map = Map(mapWidth, mapHeight);
   }
 
-  void CharUpdate () { } // zombie, dragon, ...
+  void CharacterUpdate (Character& character) { // TODO придумать способ прокидывать чара, а здесь уже понимать что это за чар.
+    TurnResult result = BAD;
+    while (result == BAD) {
+      result = CharacterMove(character, ChooseRandomSide());
+    }
+  } // zombie, dragon, ...
 
   void CharsDraw() const {
     mvaddch(_knight->GetPos().Y, _knight->GetPos().X, _knight->GetSym());
@@ -114,6 +123,11 @@ class Game {
 
     Point princessPos = findFreePosition();
     _chars.push_back(CharacterType (new Princess(princessPos)));
+
+    for (int i = 0; i < numEnemies; ++i) {
+      Point enemyPos = findFreePosition();
+      _chars.push_back(CharacterType (new Zombie(enemyPos)));
+    }
   }
 
   Point findFreePosition() {
@@ -144,5 +158,9 @@ class Game {
     for (size_t i = 0; i < hp; ++i) {
       mvaddch(mapHeight + HpSpacing, 2 + i, '-');
     }
+  }
+
+  static const Point& ChooseRandomSide () {
+    return Sides[(rand() % 4 + KEY_DOWN)];
   }
 };
