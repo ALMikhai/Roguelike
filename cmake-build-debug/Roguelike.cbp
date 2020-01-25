@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Roguelike"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Roguelike">
+				<Option output="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Roguelike" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 Roguelike"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Roguelike/fast">
+				<Option output="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Roguelike" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 Roguelike/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/CharacterFactory.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Characters/Aid.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Characters/Bullet.cpp">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Characters/Bullet.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Characters/Character.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Characters/Dragon.cpp">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Characters/Dragon.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Characters/Floor.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Characters/Knight.cpp">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Characters/Knight.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Characters/Princess.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Characters/Wall.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Characters/Zombie.cpp">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Characters/Zombie.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/CharactersLogic.cpp">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/CharactersLogic.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Collider.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Game.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Map.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Point.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Settings/Settings.cpp">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Settings/Settings.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Windows/MainMenuWindow.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Windows/MessageWindow.cpp">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Windows/MessageWindow.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Windows/PauseMenuWindow.cpp">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/Models/Windows/PauseMenuWindow.h">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/main.cpp">
+			<Option target="Roguelike"/>
+		</Unit>
+		<Unit filename="/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

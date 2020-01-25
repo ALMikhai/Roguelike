@@ -1,0 +1,3 @@
+/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/CMakeFiles/Roguelike.dir
+/home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/CMakeFiles/edit_cache.dir

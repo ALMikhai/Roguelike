@@ -2,20 +2,19 @@
 
 #include "Character.h"
 
-class Wall : public Character {
-
+class Aid : public Character{
  public:
-  explicit Wall(Point& pos) : Character(pos,
-      Settings::settingsData["WallHp"].GetInt(),
-      Settings::settingsData["WallDamage"].GetInt(),
-      Settings::settingsData["WallSym"].GetString()[0],
-      false) {}
-  explicit Wall(Point&& pos) : Wall(pos) {}
+  explicit Aid(Point& pos) : Character(pos,
+   Settings::settingsData["AidHp"].GetInt(),
+   Settings::settingsData["AidDamage"].GetInt(),
+   Settings::settingsData["AidSym"].GetString()[0],
+   true) {}
+  explicit Aid(Point&& pos) : Aid(pos) {}
 
   void Collide(Character* character) override {
     character->Collide(*this);
   }
-  void Collide(Knight& knight) override {  }
+  void Collide(Knight& knight) override { GetHp() = 0; }
   void Collide(Wall& wall) override {  }
   void Collide(Floor& floor) override {  }
   void Collide(Zombie& zombie) override {  }

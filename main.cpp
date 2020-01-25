@@ -1,10 +1,18 @@
 #include <iostream>
-#include "Models/Game.h"
+#include "Models/Windows/MainMenuWindow.h"
 
-//cd /home/alexander/Документы/CLionProjects/Roguelike/cmake-build-debug/
+//cd /home/alexander/Документы/CLionProjects/roguelike-game-ALMikhai/cmake-build-debug/
 
 int main() {
-  Game game;
-  game.Start();
+  MainMenu::ShowStartMenu();
+
+//  game.StartNewGame();
+//  initscr();
+//  noecho();
+//  keypad(stdscr, TRUE);
+//  while (1) {
+//    std::cout << getch() << std::endl;
+//  }
+
   return 0;
 }

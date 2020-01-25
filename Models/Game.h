@@ -1,49 +1,43 @@
+#pragma once
+
 #include <map>
 #include <vector>
 #include <string>
 #include <memory>
-#include <ncurses.h>
+#include <ncursesw/ncurses.h>
 #include <cstdlib>
 #include <unistd.h>
-#include "Characters/Character.h"
-#include "Characters/Wall.h"
-#include "Characters/Floor.h"
-#include "Characters/Knight.h"
-#include "Characters/Princess.h"
-#include "Characters/Zombie.h"
+#include <locale>
+#include <chrono>
+
+#include "Settings/Settings.h"
 #include "Map.h"
-
-#define mapHeight 50
-#define mapWidth 150
-#define numEnemies 3
-#define HpSpacing 2
-#define TimeToNextTurn 1000
-
-enum TurnResult { BAD, NEXT, WIN, LOSE };
-
-static std::map<const size_t, const Point> Sides = {
-    std::make_pair(KEY_UP, Point(0, -1)),
-    std::make_pair(KEY_DOWN, Point(0, 1)),
-    std::make_pair(KEY_LEFT, Point(-1, 0)),
-    std::make_pair(KEY_RIGHT, Point(1, 0)),
-};
+#include "CharacterFactory.h"
+#include "CharactersLogic.h"
+#include "Windows/MessageWindow.h"
+#include "Windows/PauseMenuWindow.h"
 
 class Game {
-  using CharacterType = std::unique_ptr<Character>;
+  using CharacterType = CharacterFactory::CharacterType;
+  friend CharactersLogic;
+  friend PauseMenu;
 
  public:
-  Game() : _map(mapWidth, mapHeight), _chars() {
-    CreatChars();
+  Game() : _map(), _chars(), _playerIsAlive(true), _gameIsWin(false), _charactersLogic(*this) {
+    SpawnChars();
+    _map.SetFocuse(_knight->GetPos());
   }
 
-  void Start() {
-    srand(time(nullptr)); // TODO сид от времени.
-
+  void StartNewGame() {
+    srand(time(nullptr));
     initscr();
     noecho();
     keypad(stdscr, TRUE);
 
-    while (true) {
+    time_t MoveTime = time(nullptr);
+    auto ShootTime = std::chrono::system_clock::now();
+
+    while (_playerIsAlive && !_gameIsWin) {
       clear();
       _map.Draw(); // Draw.
       CharsDraw(); //
@@ -51,27 +45,55 @@ class Game {
       curs_set(0);
       refresh();
 
-      TurnResult turnResult = BAD;
-      timeout(TimeToNextTurn); // Time to wait action from player.
-      size_t input = getch();
-      auto side = Sides.find(input);
-      if (side != Sides.end())
-        turnResult = CharacterMove(*_knight, side->second);
-
-      if (turnResult == WIN) {
-        Win();
+      for (auto item = _chars.begin(); item != _chars.end();) { // Update chars.
+        if (item->get()->IsDead()) {
+          item = _chars.erase(item);
+          continue;
+        }
+        _charactersLogic.Update(*item);
+        if (item->get()->IsDead()) {
+          item = _chars.erase(item);
+          continue;
+        }
+        ++item;
       }
 
-      if (turnResult == LOSE) {
-        // TODO lose.
+      for (auto item = _bullets.begin(); item != _bullets.end();) { // Update bullets.
+        if (item->get()->IsDead()) {
+          item = _bullets.erase(item);
+          continue;
+        }
+        ++item;
       }
 
-      if (input == 27)
-        break;
+      if (((std::chrono::system_clock::now().time_since_epoch() / 1000000) - (ShootTime.time_since_epoch() / 1000000)).count() >= 1000 / Settings::settingsData["bulletSpeed"].GetInt()) { // Move bullets.
+        ShootTime = std::chrono::system_clock::now();
 
-      for (auto& enemy : _chars) {
-        CharacterUpdate(*enemy);
+        for (auto item = _bullets.begin(); item != _bullets.end(); ++item) {
+          _charactersLogic.Move(*item);
+        }
       }
+
+      if (time(nullptr) - MoveTime >= Settings::settingsData["timeToNextTurn"].GetInt()) { // Move chars.
+        MoveTime = time(nullptr);
+
+        for (auto item = _chars.begin(); item != _chars.end(); ++item) {
+          _charactersLogic.Move(*item);
+        }
+      }
+
+      _charactersLogic.WaitAction(_knight);
+      _charactersLogic.Update(_knight);
+
+      _map.SetFocuse(_knight->GetPos());
+    }
+
+    if (!_playerIsAlive) {
+      MessageWindow::ShowMessageWindow("You died.");
+    }
+
+    if (_gameIsWin) {
+      MessageWindow::ShowMessageWindow("You win.");
     }
 
     endwin();
@@ -80,87 +102,71 @@ class Game {
  private:
   Map _map;
   std::vector<CharacterType> _chars;
+  std::vector<CharacterType> _bullets;
   CharacterType _knight;
-
-  TurnResult CharacterMove(Character& character, const Point& side) {
-    Point newPos = character.GetPos() + side;
-
-    if (!_map.CheckCellForStep(newPos))
-      return BAD;
-
-    auto checkPos = findChar(newPos);
-
-    if (checkPos.first)
-      return BAD; // TODO Do damage.
-
-    character.GetPos() = newPos;
-    return NEXT;
-  }
-
-  void Win() { // TODO переделать.
-    clear();
-    _map = Map(mapWidth, mapHeight);
-  }
-
-  void CharacterUpdate (Character& character) { // TODO придумать способ прокидывать чара, а здесь уже понимать что это за чар.
-    TurnResult result = BAD;
-    while (result == BAD) {
-      result = CharacterMove(character, ChooseRandomSide());
-    }
-  } // zombie, dragon, ...
+  bool _playerIsAlive;
+  bool _gameIsWin;
+  CharactersLogic _charactersLogic;
 
   void CharsDraw() const {
-    mvaddch(_knight->GetPos().Y, _knight->GetPos().X, _knight->GetSym());
+    for (const auto& item : _bullets) {
+      _map.Draw(item);
+    }
+
+    _map.Draw(_knight);
 
     for (const auto& item : _chars) {
-      mvaddch(item->GetPos().Y, item->GetPos().X, item->GetSym());
+      _map.Draw(item);
     }
   }
 
-  void CreatChars() {
-    Point knightPos = findFreePosition();
-    _knight = CharacterType (new Knight(knightPos));
+  void SpawnChars() {
+    _knight = CharacterFactory::Create(Characters::KNIGHT, FindFreePosition());
+    _chars.push_back(CharacterFactory::Create(Characters::PRINCESS, FindFreePosition()));
 
-    Point princessPos = findFreePosition();
-    _chars.push_back(CharacterType (new Princess(princessPos)));
+    int32_t numEnemies = Settings::settingsData["numEnemies"].GetInt();
+    int32_t numAids = Settings::settingsData["NumAids"].GetInt();
 
-    for (int i = 0; i < numEnemies; ++i) {
-      Point enemyPos = findFreePosition();
-      _chars.push_back(CharacterType (new Zombie(enemyPos)));
+    for (int i = 0; i < numEnemies; ++i)
+      _chars.push_back(CharacterFactory::Create(Characters::ZOMBIE, FindFreePosition()));
+
+    for (int i = 0; i < numEnemies; ++i)
+      _chars.push_back(CharacterFactory::Create(Characters::DRAGON, FindFreePosition()));
+
+    for (int i = 0; i < numAids; ++i) {
+      _chars.push_back(CharacterFactory::Create(Characters::AID, FindFreePosition()));
     }
   }
 
-  Point findFreePosition() {
+  Point FindFreePosition() {
     Point result(0, 0);
 
     do {
-      result.X = rand() % mapWidth;
-      result.Y = rand() % mapHeight;
-    } while (!findChar(result).first && !_map.CheckCellForStep(result));
+      result.X = rand() % _map.Height;
+      result.Y = rand() % _map.Height;
+    } while (!IsCharacterOnThisPos(result) && !_map.CheckCellForStep(result));
 
     return result;
   }
 
-  std::pair<bool, Character> findChar (Point& pos) {
+  bool IsCharacterOnThisPos (Point& pos) {
     for (auto& item : _chars) {
       if (item->GetPos() == pos) {
-        return std::make_pair(true, *item);
+        return true;
       }
     }
 
-    return std::make_pair(false, Floor(Point(0, 0)));
+    return false;
   }
 
   void DrawHpBar() const {
-    mvaddch(mapHeight + HpSpacing, 0, 'H');
-    mvaddch(mapHeight + HpSpacing, 1, 'P');
+    int32_t hpSpacing = Settings::settingsData["HpSpacing"].GetInt();
+
+    mvaddch((_map.HalfWindowHeight * 2) + hpSpacing, 0, 'H');
+    mvaddch((_map.HalfWindowHeight * 2) + hpSpacing, 1, 'P');
     size_t hp = _knight->GetHp();
     for (size_t i = 0; i < hp; ++i) {
-      mvaddch(mapHeight + HpSpacing, 2 + i, '-');
+      mvaddch((_map.HalfWindowHeight * 2) + hpSpacing, 2 + i, '-');
     }
-  }
-
-  static const Point& ChooseRandomSide () {
-    return Sides[(rand() % 4 + KEY_DOWN)];
   }
 };
